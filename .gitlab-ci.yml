@@ -1,7 +1,8 @@
 stages:
-    - echoPrintJob
+    - runSAST
 
-print-text-job:
-    stage: echoPrintJob
-    script:
-      - echo "Hello, Welcome Champ!"
+run-sast-job:
+    stage: runSAST
+    image: maven:3.8.5-openjdk-17-slim
+    script: |
+      mvn verify package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=integrationwithgitlab -Dsonar.projectKey=integrationwithgitlab -Dsonar.token=9bea3ff4bb8a068682205a9d06a1721bb1406c1a

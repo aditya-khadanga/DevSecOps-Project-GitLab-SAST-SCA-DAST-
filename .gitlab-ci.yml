@@ -1,7 +1,0 @@
-stages:
-    - echoPrintText
-
-print-text-job:
-    stage: echoPrintText
-    script:
-      - echo "Hello, Aditya Khadanga welcome to gitlabs world!"

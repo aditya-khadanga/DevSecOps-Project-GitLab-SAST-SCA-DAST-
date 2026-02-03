@@ -1,10 +1,17 @@
 stages:
-    - runSCAScanUsingSnyk
+    - runDASTScanUsingZAP
 
-run-sca-job:
-    stage: runSCAScanUsingSnyk
+run-dast-job:
+    stage: runDASTScanUsingZAP
     image: maven:3.8.5-openjdk-17-slim
     script: |
-      SNYK_TOKEN='2f14ae96-ea4f-4dd0-b761-17593b32cad8'
-      export SNYK_TOKEN
-      mvn snyk:test -fn
+      apt-get update
+      apt-get -y install wget
+      wget https://github.com/zaproxy/zaproxy/releases/download/v2.16.0/ZAP_2.16.0_Linux.tar.gz
+      mkdir zap
+      tar -xvf ZAP_2.16.0_Linux.tar.gz
+      cd ZAP_2.16.0
+      ./zap.sh -cmd -quickurl https://www.example.com -quickprogress -quickout ../zap_report.html 
+    artifacts:
+      paths:
+        - zap_report.html

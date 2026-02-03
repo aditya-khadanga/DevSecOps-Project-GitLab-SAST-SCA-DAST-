@@ -1,0 +1,7 @@
+stages:
+    - echoPrintJob
+
+print-text-job:
+    stage: echoPrintJob
+    script:
+      - echo "Hello, Welcome Champ!"

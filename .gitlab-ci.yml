@@ -1,7 +1,19 @@
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml
+
+variables:
+  SAST_EXPERIMENTAL_FEATURES: "true"
+  DAST_WEBSITE: http://www.example.com
+  DAST_FULL_SCAN_ENABLED: "true" 
+  DAST_BROWSER_SCAN: "true"
+
 stages:
-    - runSASTScanUsingSonarCloud
-    - runSCAScanUsingSnyk
-    - runDASTScanUsingZAP
+  - test
+  - runSASTScanUsingSonarCloud
+  - runSCAScanUsingSnyk
+  - runDASTScanUsingZAP
+  - dast
 
 run-sast-job:
     stage: runSASTScanUsingSonarCloud
@@ -16,18 +28,51 @@ run-sca-job:
       SNYK_TOKEN='2f4afa39-c493-4c6d-b34e-080c1a8f9014'
       export SNYK_TOKEN
       mvn snyk:test -fn 
-
+      
 run-dast-job:
     stage: runDASTScanUsingZAP
     image: maven:3.8.5-openjdk-17-slim
     script: |
       apt-get update
       apt-get -y install wget
-      wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2.14.0_Linux.tar.gz
-      mkdir zap
-      tar -xvf ZAP_2.14.0_Linux.tar.gz
-      cd ZAP_2.14.0
+      wget https://github.com/zaproxy/zaproxy/releases/download/v2.16.0/ZAP_2.16.0_Linux.tar.gz
+      tar -xvf ZAP_2.16.0_Linux.tar.gz
+      cd ZAP_2.16.0
       ./zap.sh -cmd -quickurl https://www.example.com -quickprogress -quickout ../zap_report.html 
     artifacts:
       paths:
-        - zap_report.html
+        - zap_report.html 
+
+# stages:
+#     - runSASTScanUsingSonarCloud
+#     - runSCAScanUsingSnyk
+#     - runDASTScanUsingZAP
+
+# run-sast-job:
+#     stage: runSASTScanUsingSonarCloud
+#     image: maven:3.8.5-openjdk-17-slim
+#     script: |
+#       mvn verify package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=integrationwithgitlab -Dsonar.projectKey=integrationwithgitlab -Dsonar.token=9bea3ff4bb8a068682205a9d06a1721bb1406c1a 
+
+# run-sca-job:
+#     stage: runSCAScanUsingSnyk
+#     image: maven:3.8.5-openjdk-17-slim
+#     script: |
+#       SNYK_TOKEN='2f4afa39-c493-4c6d-b34e-080c1a8f9014'
+#       export SNYK_TOKEN
+#       mvn snyk:test -fn 
+
+# run-dast-job:
+#     stage: runDASTScanUsingZAP
+#     image: maven:3.8.5-openjdk-17-slim
+#     script: |
+#       apt-get update
+#       apt-get -y install wget
+#       wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2.14.0_Linux.tar.gz
+#       mkdir zap
+#       tar -xvf ZAP_2.14.0_Linux.tar.gz
+#       cd ZAP_2.14.0
+#       ./zap.sh -cmd -quickurl https://www.example.com -quickprogress -quickout ../zap_report.html 
+#     artifacts:
+#       paths:
+#         - zap_report.html

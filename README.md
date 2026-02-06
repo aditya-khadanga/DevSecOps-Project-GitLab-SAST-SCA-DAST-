@@ -1,5 +1,6 @@
 # Vulnado - Intentionally Vulnerable Java Application
 
+Project Implementation Guide: https://adityakhadanga.hashnode.dev/how-to-integrate-sast-sca-dast-tools-into-gitlabs-cicd-for-enhanced-security
 
 This application and exercises will take you through some of the OWASP top 10 Vulnerabilities and how to prevent them.
 

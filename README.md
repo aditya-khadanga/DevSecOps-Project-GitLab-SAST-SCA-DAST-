@@ -1,6 +1,9 @@
 # Vulnado - Intentionally Vulnerable Java Application
 
+
 This application and exercises will take you through some of the OWASP top 10 Vulnerabilities and how to prevent them.
+
+How to migrate from gitlab to github: (https://adityakhadanga.hashnode.dev/how-to-transfer-a-repository-from-gitlab-to-github)
 
 ## Up and running
 
